@@ -1,8 +1,7 @@
-charts-export-csv
+Vaadin Charts Export CSV Example
 ==============
 
-Template for a simple Vaadin application that only requires a Servlet 3.0 container to run.
-
+Simple Vaadin application that uses [export csv](https://github.com/highcharts/export-csv) plugin in a chart created using [Vaadin Charts](https://vaadin.com/charts)
 
 Workflow
 ========
@@ -20,25 +19,16 @@ To produce a deployable production mode WAR:
 - run "mvn clean package"
 - test the war file with "mvn jetty:run-war"
 
-Developing a theme using the runtime compiler
--------------------------
+Step by Step
+========
+1. Create a Vaadin project using vaadin-archetype-application, add vaadin-charts dependency
+2. Add `HighchartsPluginResources` class in client package and create a `TextResource` for the plugin js file. Add plugin js file in same folder but under src/main/resources.
+3. Create `HighchartsPluginScriptLoader` class extending `HighchartsScriptLoader`. Override `injectResources` so that both original and new plugin resources are injected.
+4. In project `widgetset.gwt.xml` file replace the original script loader with extended one:
+```
+    <replace-with class="uy.com.chartexport.client.HighchartsPluginScriptLoader">
+        <when-type-is class="com.vaadin.addon.charts.client.HighchartsScriptLoader"/>
+    </replace-with>
+```
+Remember to enable chart exporting.
 
-When developing the theme, Vaadin can be configured to compile the SASS based
-theme at runtime in the server. This way you can just modify the scss files in
-your IDE and reload the browser to see changes.
-
-To use the runtime compilation, open pom.xml and comment out the compile-theme 
-goal from vaadin-maven-plugin configuration. To remove a possibly existing 
-pre-compiled theme, run "mvn clean package" once.
-
-When using the runtime compiler, running the application in the "run" mode 
-(rather than in "debug" mode) can speed up consecutive theme compilations
-significantly.
-
-It is highly recommended to disable runtime compilation for production WAR files.
-
-Using Vaadin pre-releases
--------------------------
-
-If Vaadin pre-releases are not enabled by default, use the Maven parameter
-"-P vaadin-prerelease" or change the activation default value of the profile in pom.xml .

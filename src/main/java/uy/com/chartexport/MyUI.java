@@ -45,6 +45,7 @@ public class MyUI extends UI {
 
         Configuration configuration = chart.getConfiguration();
         configuration.getChart().setType(ChartType.SPLINE);
+        configuration.setExporting(true);
 
         configuration.getTitle().setText("Monthly Average Temperature");
         configuration.getSubTitle().setText("Source: WorldClimate.com");
